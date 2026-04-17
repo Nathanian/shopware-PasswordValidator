@@ -54,46 +54,65 @@ export default class UmiPasswordRulePlugin extends Plugin {
         return messageElement;
     }
 
-    _getValidationState() {
+    _getMissingMessages() {
         const value = this.el.value || '';
+        const missingMessages = [];
 
         if (value.length < 10) {
-            return { isValid: false, message: this._messages.tooShort };
+            missingMessages.push(this._messages.tooShort);
         }
 
         if (!/[A-Z]/.test(value)) {
-            return { isValid: false, message: this._messages.missingUppercase };
+            missingMessages.push(this._messages.missingUppercase);
         }
 
         if (!/[a-z]/.test(value)) {
-            return { isValid: false, message: this._messages.missingLowercase };
+            missingMessages.push(this._messages.missingLowercase);
         }
 
         if (!/[0-9]/.test(value)) {
-            return { isValid: false, message: this._messages.missingNumber };
+            missingMessages.push(this._messages.missingNumber);
         }
 
         if (!/[^A-Za-z0-9]/.test(value)) {
-            return { isValid: false, message: this._messages.missingSpecialCharacter };
+            missingMessages.push(this._messages.missingSpecialCharacter);
         }
 
-        return { isValid: true, message: '' };
+        return missingMessages;
+    }
+
+    _getValidationState() {
+        const missingMessages = this._getMissingMessages();
+
+        return {
+            isValid: missingMessages.length === 0,
+            messages: missingMessages,
+        };
     }
 
     _validate() {
         const validationState = this._getValidationState();
+        const combinedMessage = validationState.messages.join('\n');
 
-        this.el.setCustomValidity(validationState.message);
-        this._renderLiveMessage(validationState.message);
+        this.el.setCustomValidity(combinedMessage);
+        this._renderLiveMessage(validationState.messages);
         this._toggleSubmitButton(validationState.isValid);
     }
 
-    _renderLiveMessage(message) {
+    _renderLiveMessage(messages) {
         if (!this._liveMessageElement) {
             return;
         }
 
-        this._liveMessageElement.textContent = message;
+        if (!messages.length) {
+            this._liveMessageElement.textContent = '';
+            this._liveMessageElement.innerHTML = '';
+            return;
+        }
+
+        this._liveMessageElement.innerHTML = messages
+            .map((message) => `<div>${message}</div>`)
+            .join('');
     }
 
     _toggleSubmitButton(isValid) {
