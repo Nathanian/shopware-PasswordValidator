@@ -15,6 +15,7 @@
         minlength: 10,
         required: true,
         attributes: {
+            'data-umi-register-password': 'true',
             pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$',
             'data-form-validation-pattern-message': 'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.'
         }

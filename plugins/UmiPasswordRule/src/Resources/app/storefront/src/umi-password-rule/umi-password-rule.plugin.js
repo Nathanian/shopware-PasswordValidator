@@ -2,6 +2,9 @@ const Plugin = window.PluginBaseClass;
 
 export default class UmiPasswordRulePlugin extends Plugin {
     init() {
+        this._form = this.el.closest('form');
+        this._submitButton = this._form ? this._form.querySelector('[type="submit"]') : null;
+
         this._registerEvents();
         this._validate();
     }
@@ -34,6 +37,15 @@ export default class UmiPasswordRulePlugin extends Plugin {
             this.el.setCustomValidity('');
         }
 
-        this.el.reportValidity();
+        this._toggleSubmitButton(isValid);
+    }
+
+    _toggleSubmitButton(isValid) {
+        if (!this._submitButton) {
+            return;
+        }
+
+        this._submitButton.disabled = !isValid;
+        this._submitButton.setAttribute('aria-disabled', String(!isValid));
     }
 }
