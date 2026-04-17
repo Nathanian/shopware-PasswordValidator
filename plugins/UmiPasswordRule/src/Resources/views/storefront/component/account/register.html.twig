@@ -1,0 +1,22 @@
+{% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
+
+{% block component_account_register_personal_password_input %}
+    {% set passwordFieldDescription = 'Mindestens 10 Zeichen, davon 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl und 1 Sonderzeichen.' %}
+
+    {% sw_include '@Storefront/storefront/component/form/form-input.html.twig' with {
+        type: 'password',
+        label: 'account.personalPasswordLabel'|trans|sw_sanitize,
+        id: 'personalPassword',
+        name: 'password',
+        autocomplete: 'new-password',
+        description: passwordFieldDescription,
+        violationPath: '/password',
+        validationRules: 'required,minLength,pattern',
+        minlength: 10,
+        required: true,
+        attributes: {
+            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$',
+            'data-form-validation-pattern-message': 'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.'
+        }
+    } %}
+{% endblock %}

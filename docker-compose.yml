@@ -1,0 +1,15 @@
+services:
+  shopware:
+    image: dockware/dev:latest
+    container_name: shopware_dev
+    ports:
+      - "80:80"
+      - "443:443"
+      - "3307:3306"
+      - "8080:8080"
+      - "1025:1025"
+      - "5173:5173"
+      - "9998:9998"
+      - "9999:9999"
+    volumes:
+      - ./plugins:/var/www/html/custom/plugins
