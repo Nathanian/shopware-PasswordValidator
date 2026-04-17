@@ -4,6 +4,25 @@ export default class UmiPasswordRulePlugin extends Plugin {
     init() {
         this._form = this.el.closest('form');
         this._submitButton = this._form ? this._form.querySelector('[type="submit"]') : null;
+        this._liveMessageElement = this._createLiveMessageElement();
+
+        this._messages = {
+            tooShort:
+                this.el.dataset.passwordMessageTooShort ||
+                'Das Passwort ist zu kurz (mindestens 10 Zeichen).',
+            missingUppercase:
+                this.el.dataset.passwordMessageMissingUppercase ||
+                'Das Passwort muss mindestens einen Großbuchstaben enthalten.',
+            missingLowercase:
+                this.el.dataset.passwordMessageMissingLowercase ||
+                'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.',
+            missingNumber:
+                this.el.dataset.passwordMessageMissingNumber ||
+                'Das Passwort muss mindestens eine Zahl enthalten.',
+            missingSpecialCharacter:
+                this.el.dataset.passwordMessageMissingSpecialCharacter ||
+                'Das Passwort muss mindestens ein Sonderzeichen enthalten.',
+        };
 
         this._registerEvents();
         this._validate();
@@ -19,25 +38,62 @@ export default class UmiPasswordRulePlugin extends Plugin {
         });
     }
 
-    _validate() {
-        const value = this.el.value || '';
+    _createLiveMessageElement() {
+        const existingElement = this.el.parentElement?.querySelector('[data-umi-password-live-message]');
 
-        const isValid =
-            value.length >= 10 &&
-            /[a-z]/.test(value) &&
-            /[A-Z]/.test(value) &&
-            /[0-9]/.test(value) &&
-            /[^A-Za-z0-9]/.test(value);
-
-        if (!isValid) {
-            this.el.setCustomValidity(
-                'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.'
-            );
-        } else {
-            this.el.setCustomValidity('');
+        if (existingElement) {
+            return existingElement;
         }
 
-        this._toggleSubmitButton(isValid);
+        const messageElement = document.createElement('div');
+        messageElement.setAttribute('data-umi-password-live-message', 'true');
+        messageElement.classList.add('form-text', 'text-danger');
+
+        this.el.insertAdjacentElement('afterend', messageElement);
+
+        return messageElement;
+    }
+
+    _getValidationState() {
+        const value = this.el.value || '';
+
+        if (value.length < 10) {
+            return { isValid: false, message: this._messages.tooShort };
+        }
+
+        if (!/[A-Z]/.test(value)) {
+            return { isValid: false, message: this._messages.missingUppercase };
+        }
+
+        if (!/[a-z]/.test(value)) {
+            return { isValid: false, message: this._messages.missingLowercase };
+        }
+
+        if (!/[0-9]/.test(value)) {
+            return { isValid: false, message: this._messages.missingNumber };
+        }
+
+        if (!/[^A-Za-z0-9]/.test(value)) {
+            return { isValid: false, message: this._messages.missingSpecialCharacter };
+        }
+
+        return { isValid: true, message: '' };
+    }
+
+    _validate() {
+        const validationState = this._getValidationState();
+
+        this.el.setCustomValidity(validationState.message);
+        this._renderLiveMessage(validationState.message);
+        this._toggleSubmitButton(validationState.isValid);
+    }
+
+    _renderLiveMessage(message) {
+        if (!this._liveMessageElement) {
+            return;
+        }
+
+        this._liveMessageElement.textContent = message;
     }
 
     _toggleSubmitButton(isValid) {

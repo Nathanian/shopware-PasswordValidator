@@ -17,7 +17,12 @@
         attributes: {
             'data-umi-register-password': 'true',
             pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$',
-            'data-form-validation-pattern-message': 'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.'
+            'data-form-validation-pattern-message': 'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.',
+            'data-password-message-too-short': 'Das Passwort ist zu kurz (mindestens 10 Zeichen).',
+            'data-password-message-missing-uppercase': 'Das Passwort muss mindestens einen Großbuchstaben enthalten.',
+            'data-password-message-missing-lowercase': 'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.',
+            'data-password-message-missing-number': 'Das Passwort muss mindestens eine Zahl enthalten.',
+            'data-password-message-missing-special-character': 'Das Passwort muss mindestens ein Sonderzeichen enthalten.'
         }
     } %}
 {% endblock %}
