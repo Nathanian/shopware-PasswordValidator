@@ -3,7 +3,6 @@ import { validatePasswordRules } from './password-rules.validator';
 
 const Plugin = window.PluginBaseClass;
 const LIVE_MESSAGE_ID_SUFFIX = 'umi-password-rule-live-message';
-const SUMMARY_ID_SUFFIX = 'umi-password-rule-summary';
 
 const escapeHtml = (value) => String(value)
     .replace(/&/g, '&amp;')
@@ -17,12 +16,10 @@ export default class UmiPasswordRulePlugin extends Plugin {
         this._form = this.el.closest('form');
         this._submitButton = this._form ? this._form.querySelector('[type="submit"]') : null;
         this._liveMessageElement = this._createLiveMessageElement();
-        this._summaryElement = this._createSummaryElement();
 
         this._messageTemplates = this._collectMessageTemplates();
         this._rules = createPasswordRulesConfig();
 
-        this._renderSummary();
         this._registerEvents();
         this._validate();
     }
@@ -83,51 +80,8 @@ export default class UmiPasswordRulePlugin extends Plugin {
         return messageElement;
     }
 
-    _createSummaryElement() {
-        const existingElement = this.el.parentElement?.querySelector('[data-umi-password-summary]');
-
-        if (existingElement) {
-            if (!existingElement.id) {
-                existingElement.id = `${this.el.id || this.el.name || SUMMARY_ID_SUFFIX}-${SUMMARY_ID_SUFFIX}`;
-            }
-
-            return existingElement;
-        }
-
-        const summaryElement = document.createElement('div');
-        summaryElement.id = `${this.el.id || this.el.name || SUMMARY_ID_SUFFIX}-${SUMMARY_ID_SUFFIX}`;
-        summaryElement.setAttribute('data-umi-password-summary', 'true');
-        summaryElement.classList.add('form-text', 'umi-password-rule__summary');
-
-        this.el.insertAdjacentElement('afterend', summaryElement);
-
-        return summaryElement;
-    }
-
     _getValidationState() {
         return validatePasswordRules(this.el.value || '', this._rules, this._messageTemplates);
-    }
-
-    _renderSummary() {
-        if (!this._summaryElement) {
-            return;
-        }
-
-        const summaryValidation = validatePasswordRules('', this._rules, this._messageTemplates);
-        const summaryItems = summaryValidation.results
-            .map((result) => result.hint)
-            .filter((hint) => Boolean(hint));
-
-        if (!summaryItems.length) {
-            this._summaryElement.innerHTML = '';
-            this._summaryElement.hidden = true;
-            return;
-        }
-
-        this._summaryElement.hidden = false;
-        this._summaryElement.innerHTML = `<ul class="umi-password-rule__summary-list">${summaryItems
-            .map((item) => `<li class="umi-password-rule__summary-item">${escapeHtml(item)}</li>`)
-            .join('')}</ul>`;
     }
 
     _validate() {
