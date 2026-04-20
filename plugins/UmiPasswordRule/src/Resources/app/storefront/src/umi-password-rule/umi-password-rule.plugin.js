@@ -1,4 +1,5 @@
 const Plugin = window.PluginBaseClass;
+const LIVE_MESSAGE_ID_SUFFIX = 'umi-password-rule-live-message';
 
 export default class UmiPasswordRulePlugin extends Plugin {
     init() {
@@ -42,12 +43,22 @@ export default class UmiPasswordRulePlugin extends Plugin {
         const existingElement = this.el.parentElement?.querySelector('[data-umi-password-live-message]');
 
         if (existingElement) {
+            if (!existingElement.id) {
+                existingElement.id = `${this.el.id || this.el.name || LIVE_MESSAGE_ID_SUFFIX}-${LIVE_MESSAGE_ID_SUFFIX}`;
+            }
+            existingElement.setAttribute('aria-live', 'polite');
+            existingElement.setAttribute('aria-atomic', 'true');
+            existingElement.hidden = true;
             return existingElement;
         }
 
         const messageElement = document.createElement('div');
+        messageElement.id = `${this.el.id || this.el.name || LIVE_MESSAGE_ID_SUFFIX}-${LIVE_MESSAGE_ID_SUFFIX}`;
         messageElement.setAttribute('data-umi-password-live-message', 'true');
+        messageElement.setAttribute('aria-live', 'polite');
+        messageElement.setAttribute('aria-atomic', 'true');
         messageElement.classList.add('form-text', 'text-danger', 'umi-password-rule__messages');
+        messageElement.hidden = true;
 
         this.el.insertAdjacentElement('afterend', messageElement);
 
@@ -105,14 +116,21 @@ export default class UmiPasswordRulePlugin extends Plugin {
         }
 
         if (!messages.length) {
-            this._liveMessageElement.textContent = '';
             this._liveMessageElement.innerHTML = '';
+            this._liveMessageElement.hidden = true;
+            this.el.removeAttribute('aria-describedby');
             return;
         }
 
-        this._liveMessageElement.innerHTML = messages
-            .map((message) => `<div class="umi-password-rule__message-item">${message}</div>`)
-            .join('');
+        this._liveMessageElement.hidden = false;
+        this.el.setAttribute('aria-describedby', this._liveMessageElement.id);
+        this._liveMessageElement.innerHTML = `
+            <ul class="umi-password-rule__message-list">
+                ${messages
+                    .map((message) => `<li class="umi-password-rule__message-item">${message}</li>`)
+                    .join('')}
+            </ul>
+        `;
     }
 
     _toggleSubmitButton(isValid) {
