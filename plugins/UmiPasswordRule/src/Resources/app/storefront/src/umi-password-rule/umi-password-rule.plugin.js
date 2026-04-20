@@ -1,42 +1,60 @@
+import { createPasswordRulesConfig } from './password-rules.config';
+import { validatePasswordRules } from './password-rules.validator';
+
 const Plugin = window.PluginBaseClass;
 const LIVE_MESSAGE_ID_SUFFIX = 'umi-password-rule-live-message';
+const SUMMARY_ID_SUFFIX = 'umi-password-rule-summary';
+
+const escapeHtml = (value) => String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 
 export default class UmiPasswordRulePlugin extends Plugin {
     init() {
         this._form = this.el.closest('form');
         this._submitButton = this._form ? this._form.querySelector('[type="submit"]') : null;
         this._liveMessageElement = this._createLiveMessageElement();
+        this._summaryElement = this._createSummaryElement();
 
-        this._messages = {
-            tooShort:
-                this.el.dataset.passwordMessageTooShort ||
-                'The password is too short (minimum 10 characters).',
-            missingUppercase:
-                this.el.dataset.passwordMessageMissingUppercase ||
-                'The password must contain at least one uppercase letter.',
-            missingLowercase:
-                this.el.dataset.passwordMessageMissingLowercase ||
-                'The password must contain at least one lowercase letter.',
-            missingNumber:
-                this.el.dataset.passwordMessageMissingNumber ||
-                'The password must contain at least one number.',
-            missingSpecialCharacter:
-                this.el.dataset.passwordMessageMissingSpecialCharacter ||
-                'The password must contain at least one special character.',
-        };
+        this._messageTemplates = this._collectMessageTemplates();
+        this._rules = createPasswordRulesConfig();
 
+        this._renderSummary();
         this._registerEvents();
         this._validate();
     }
 
-    _registerEvents() {
-        this.el.addEventListener('input', () => {
-            this._validate();
-        });
+    _collectMessageTemplates() {
+        return {
+            minLengthSingular: this.el.dataset.passwordMessageMinLengthSingular,
+            minLengthPlural: this.el.dataset.passwordMessageMinLengthPlural,
+            uppercaseSingular: this.el.dataset.passwordMessageUppercaseSingular,
+            uppercasePlural: this.el.dataset.passwordMessageUppercasePlural,
+            lowercaseSingular: this.el.dataset.passwordMessageLowercaseSingular,
+            lowercasePlural: this.el.dataset.passwordMessageLowercasePlural,
+            numberSingular: this.el.dataset.passwordMessageNumberSingular,
+            numberPlural: this.el.dataset.passwordMessageNumberPlural,
+            specialCharacterSingular: this.el.dataset.passwordMessageSpecialCharacterSingular,
+            specialCharacterPlural: this.el.dataset.passwordMessageSpecialCharacterPlural,
+            hintMinLengthSingular: this.el.dataset.passwordHintMinLengthSingular,
+            hintMinLengthPlural: this.el.dataset.passwordHintMinLengthPlural,
+            hintUppercaseSingular: this.el.dataset.passwordHintUppercaseSingular,
+            hintUppercasePlural: this.el.dataset.passwordHintUppercasePlural,
+            hintLowercaseSingular: this.el.dataset.passwordHintLowercaseSingular,
+            hintLowercasePlural: this.el.dataset.passwordHintLowercasePlural,
+            hintNumberSingular: this.el.dataset.passwordHintNumberSingular,
+            hintNumberPlural: this.el.dataset.passwordHintNumberPlural,
+            hintSpecialCharacterSingular: this.el.dataset.passwordHintSpecialCharacterSingular,
+            hintSpecialCharacterPlural: this.el.dataset.passwordHintSpecialCharacterPlural,
+        };
+    }
 
-        this.el.addEventListener('blur', () => {
-            this._validate();
-        });
+    _registerEvents() {
+        this.el.addEventListener('input', () => this._validate());
+        this.el.addEventListener('blur', () => this._validate());
     }
 
     _createLiveMessageElement() {
@@ -65,48 +83,61 @@ export default class UmiPasswordRulePlugin extends Plugin {
         return messageElement;
     }
 
-    _getMissingMessages() {
-        const value = this.el.value || '';
-        const missingMessages = [];
+    _createSummaryElement() {
+        const existingElement = this.el.parentElement?.querySelector('[data-umi-password-summary]');
 
-        if (value.length < 10) {
-            missingMessages.push(this._messages.tooShort);
+        if (existingElement) {
+            if (!existingElement.id) {
+                existingElement.id = `${this.el.id || this.el.name || SUMMARY_ID_SUFFIX}-${SUMMARY_ID_SUFFIX}`;
+            }
+
+            return existingElement;
         }
 
-        if (!/[A-Z]/.test(value)) {
-            missingMessages.push(this._messages.missingUppercase);
-        }
+        const summaryElement = document.createElement('div');
+        summaryElement.id = `${this.el.id || this.el.name || SUMMARY_ID_SUFFIX}-${SUMMARY_ID_SUFFIX}`;
+        summaryElement.setAttribute('data-umi-password-summary', 'true');
+        summaryElement.classList.add('form-text', 'umi-password-rule__summary');
 
-        if (!/[a-z]/.test(value)) {
-            missingMessages.push(this._messages.missingLowercase);
-        }
+        this.el.insertAdjacentElement('afterend', summaryElement);
 
-        if (!/[0-9]/.test(value)) {
-            missingMessages.push(this._messages.missingNumber);
-        }
-
-        if (!/[^A-Za-z0-9]/.test(value)) {
-            missingMessages.push(this._messages.missingSpecialCharacter);
-        }
-
-        return missingMessages;
+        return summaryElement;
     }
 
     _getValidationState() {
-        const missingMessages = this._getMissingMessages();
+        return validatePasswordRules(this.el.value || '', this._rules, this._messageTemplates);
+    }
 
-        return {
-            isValid: missingMessages.length === 0,
-            messages: missingMessages,
-        };
+    _renderSummary() {
+        if (!this._summaryElement) {
+            return;
+        }
+
+        const summaryValidation = validatePasswordRules('', this._rules, this._messageTemplates);
+        const summaryItems = summaryValidation.results
+            .map((result) => result.hint)
+            .filter((hint) => Boolean(hint));
+
+        if (!summaryItems.length) {
+            this._summaryElement.innerHTML = '';
+            this._summaryElement.hidden = true;
+            return;
+        }
+
+        this._summaryElement.hidden = false;
+        this._summaryElement.innerHTML = `<ul class="umi-password-rule__summary-list">${summaryItems
+            .map((item) => `<li class="umi-password-rule__summary-item">${escapeHtml(item)}</li>`)
+            .join('')}</ul>`;
     }
 
     _validate() {
         const validationState = this._getValidationState();
-        const combinedMessage = validationState.messages.join('\n');
+        const combinedMessage = validationState.failedRules
+            .map((rule) => rule.errorMessage)
+            .join('\n');
 
         this.el.setCustomValidity(combinedMessage);
-        this._renderLiveMessage(validationState.messages);
+        this._renderLiveMessage(validationState.failedRules.map((rule) => rule.errorMessage));
         this._toggleSubmitButton(validationState.isValid);
     }
 
@@ -127,8 +158,8 @@ export default class UmiPasswordRulePlugin extends Plugin {
         this._liveMessageElement.innerHTML = `
             <ul class="umi-password-rule__message-list">
                 ${messages
-                    .map((message) => `<li class="umi-password-rule__message-item">${message}</li>`)
-                    .join('')}
+        .map((message) => `<li class="umi-password-rule__message-item">${escapeHtml(message)}</li>`)
+        .join('')}
             </ul>
         `;
     }
