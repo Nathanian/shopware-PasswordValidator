@@ -1,27 +1,37 @@
 {% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
 
 {% block component_account_register_personal_password_input %}
-    {% set passwordFieldDescription = 'umiPasswordRule.password.description'|trans|sw_sanitize %}
-
     {% sw_include '@Storefront/storefront/component/form/form-input.html.twig' with {
         type: 'password',
         label: 'account.personalPasswordLabel'|trans|sw_sanitize,
         id: 'personalPassword',
         name: 'password',
         autocomplete: 'new-password',
-        description: passwordFieldDescription,
         violationPath: '/password',
-        validationRules: 'required,pattern',
+        validationRules: 'required',
         required: true,
         attributes: {
             'data-umi-register-password': 'true',
-            pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$',
-            'data-form-validation-pattern-message': 'umiPasswordRule.password.patternMessage'|trans|sw_sanitize,
-            'data-password-message-too-short': 'umiPasswordRule.password.rule.tooShort'|trans|sw_sanitize,
-            'data-password-message-missing-uppercase': 'umiPasswordRule.password.rule.missingUppercase'|trans|sw_sanitize,
-            'data-password-message-missing-lowercase': 'umiPasswordRule.password.rule.missingLowercase'|trans|sw_sanitize,
-            'data-password-message-missing-number': 'umiPasswordRule.password.rule.missingNumber'|trans|sw_sanitize,
-            'data-password-message-missing-special-character': 'umiPasswordRule.password.rule.missingSpecialCharacter'|trans|sw_sanitize
+            'data-password-message-min-length-singular': 'umiPasswordRule.password.message.minLength.singular'|trans|sw_sanitize,
+            'data-password-message-min-length-plural': 'umiPasswordRule.password.message.minLength.plural'|trans|sw_sanitize,
+            'data-password-message-uppercase-singular': 'umiPasswordRule.password.message.uppercase.singular'|trans|sw_sanitize,
+            'data-password-message-uppercase-plural': 'umiPasswordRule.password.message.uppercase.plural'|trans|sw_sanitize,
+            'data-password-message-lowercase-singular': 'umiPasswordRule.password.message.lowercase.singular'|trans|sw_sanitize,
+            'data-password-message-lowercase-plural': 'umiPasswordRule.password.message.lowercase.plural'|trans|sw_sanitize,
+            'data-password-message-number-singular': 'umiPasswordRule.password.message.number.singular'|trans|sw_sanitize,
+            'data-password-message-number-plural': 'umiPasswordRule.password.message.number.plural'|trans|sw_sanitize,
+            'data-password-message-special-character-singular': 'umiPasswordRule.password.message.specialCharacter.singular'|trans|sw_sanitize,
+            'data-password-message-special-character-plural': 'umiPasswordRule.password.message.specialCharacter.plural'|trans|sw_sanitize,
+            'data-password-hint-min-length-singular': 'umiPasswordRule.password.hint.minLength.singular'|trans|sw_sanitize,
+            'data-password-hint-min-length-plural': 'umiPasswordRule.password.hint.minLength.plural'|trans|sw_sanitize,
+            'data-password-hint-uppercase-singular': 'umiPasswordRule.password.hint.uppercase.singular'|trans|sw_sanitize,
+            'data-password-hint-uppercase-plural': 'umiPasswordRule.password.hint.uppercase.plural'|trans|sw_sanitize,
+            'data-password-hint-lowercase-singular': 'umiPasswordRule.password.hint.lowercase.singular'|trans|sw_sanitize,
+            'data-password-hint-lowercase-plural': 'umiPasswordRule.password.hint.lowercase.plural'|trans|sw_sanitize,
+            'data-password-hint-number-singular': 'umiPasswordRule.password.hint.number.singular'|trans|sw_sanitize,
+            'data-password-hint-number-plural': 'umiPasswordRule.password.hint.number.plural'|trans|sw_sanitize,
+            'data-password-hint-special-character-singular': 'umiPasswordRule.password.hint.specialCharacter.singular'|trans|sw_sanitize,
+            'data-password-hint-special-character-plural': 'umiPasswordRule.password.hint.specialCharacter.plural'|trans|sw_sanitize
         }
     } %}
 {% endblock %}

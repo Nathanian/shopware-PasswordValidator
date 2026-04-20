@@ -1,20 +1,49 @@
 {
   "umiPasswordRule": {
     "password": {
-      "description": "At least 10 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
-      "patternMessage": "The password must contain at least 10 characters, uppercase and lowercase letters, a number, and a special character.",
-      "notBlank": "Please enter a password.",
-      "tooShort": "The password must be at least 10 characters long.",
-      "missingUppercase": "The password must contain at least one uppercase letter.",
-      "missingLowercase": "The password must contain at least one lowercase letter.",
-      "missingNumber": "The password must contain at least one number.",
-      "missingSpecialCharacter": "The password must contain at least one special character.",
-      "rule": {
-        "tooShort": "The password is too short (minimum 10 characters).",
-        "missingUppercase": "The password must contain at least one uppercase letter.",
-        "missingLowercase": "The password must contain at least one lowercase letter.",
-        "missingNumber": "The password must contain at least one number.",
-        "missingSpecialCharacter": "The password must contain at least one special character."
+      "message": {
+        "minLength": {
+          "singular": "The password must be at least {{count}} character long.",
+          "plural": "The password must be at least {{count}} characters long."
+        },
+        "uppercase": {
+          "singular": "The password must contain at least {{count}} uppercase letter.",
+          "plural": "The password must contain at least {{count}} uppercase letters."
+        },
+        "lowercase": {
+          "singular": "The password must contain at least {{count}} lowercase letter.",
+          "plural": "The password must contain at least {{count}} lowercase letters."
+        },
+        "number": {
+          "singular": "The password must contain at least {{count}} number.",
+          "plural": "The password must contain at least {{count}} numbers."
+        },
+        "specialCharacter": {
+          "singular": "The password must contain at least {{count}} special character.",
+          "plural": "The password must contain at least {{count}} special characters."
+        }
+      },
+      "hint": {
+        "minLength": {
+          "singular": "Minimum {{count}} character",
+          "plural": "Minimum {{count}} characters"
+        },
+        "uppercase": {
+          "singular": "{{count}} uppercase letter",
+          "plural": "{{count}} uppercase letters"
+        },
+        "lowercase": {
+          "singular": "{{count}} lowercase letter",
+          "plural": "{{count}} lowercase letters"
+        },
+        "number": {
+          "singular": "{{count}} number",
+          "plural": "{{count}} numbers"
+        },
+        "specialCharacter": {
+          "singular": "{{count}} special character",
+          "plural": "{{count}} special characters"
+        }
       }
     }
   }
