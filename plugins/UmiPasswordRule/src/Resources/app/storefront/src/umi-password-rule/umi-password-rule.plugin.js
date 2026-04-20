@@ -132,11 +132,8 @@ export default class UmiPasswordRulePlugin extends Plugin {
 
     _validate() {
         const validationState = this._getValidationState();
-        const combinedMessage = validationState.failedRules
-            .map((rule) => rule.errorMessage)
-            .join('\n');
 
-        this.el.setCustomValidity(combinedMessage);
+        this.el.setCustomValidity('');
         this._renderLiveMessage(validationState.failedRules.map((rule) => rule.errorMessage));
         this._toggleSubmitButton(validationState.isValid);
     }
