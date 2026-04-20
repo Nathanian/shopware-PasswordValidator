@@ -13,7 +13,7 @@ class UmiPasswordRule extends Plugin
 {
     public function install(InstallContext $installContext): void
     {
-        // Do stuff such as creating a new payment method
+        // Intentionally no-op: plugin wiring is handled via DI and storefront assets.
     }
 
     public function uninstall(UninstallContext $uninstallContext): void
@@ -24,31 +24,31 @@ class UmiPasswordRule extends Plugin
             return;
         }
 
-        // Remove or deactivate the data created by the plugin
+        // Intentionally no-op: no persisted plugin-owned data requires cleanup.
     }
 
     public function activate(ActivateContext $activateContext): void
     {
-        // Activate entities, such as a new payment method
-        // Or create new entities here, because now your plugin is installed and active for sure
+        // Intentionally no-op: activation is purely configuration and template extension based.
     }
 
     public function deactivate(DeactivateContext $deactivateContext): void
     {
-        // Deactivate entities, such as a new payment method
-        // Or remove previously created entities
+        // Intentionally no-op: deactivation requires no additional teardown.
     }
 
     public function update(UpdateContext $updateContext): void
     {
-        // Update necessary stuff, mostly non-database related
+        // Intentionally no-op: no migration or runtime update steps are needed currently.
     }
 
     public function postInstall(InstallContext $installContext): void
     {
+        // Intentionally no-op: nothing to execute after installation.
     }
 
     public function postUpdate(UpdateContext $updateContext): void
     {
+        // Intentionally no-op: nothing to execute after update.
     }
 }
