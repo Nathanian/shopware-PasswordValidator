@@ -47,7 +47,7 @@ export default class UmiPasswordRulePlugin extends Plugin {
 
         const messageElement = document.createElement('div');
         messageElement.setAttribute('data-umi-password-live-message', 'true');
-        messageElement.classList.add('form-text', 'text-danger');
+        messageElement.classList.add('form-text', 'text-danger', 'umi-password-rule__messages');
 
         this.el.insertAdjacentElement('afterend', messageElement);
 
@@ -111,7 +111,7 @@ export default class UmiPasswordRulePlugin extends Plugin {
         }
 
         this._liveMessageElement.innerHTML = messages
-            .map((message) => `<div>${message}</div>`)
+            .map((message) => `<div class="umi-password-rule__message-item">${message}</div>`)
             .join('');
     }
 
