@@ -9,19 +9,19 @@ export default class UmiPasswordRulePlugin extends Plugin {
         this._messages = {
             tooShort:
                 this.el.dataset.passwordMessageTooShort ||
-                'Das Passwort ist zu kurz (mindestens 10 Zeichen).',
+                'The password is too short (minimum 10 characters).',
             missingUppercase:
                 this.el.dataset.passwordMessageMissingUppercase ||
-                'Das Passwort muss mindestens einen Großbuchstaben enthalten.',
+                'The password must contain at least one uppercase letter.',
             missingLowercase:
                 this.el.dataset.passwordMessageMissingLowercase ||
-                'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.',
+                'The password must contain at least one lowercase letter.',
             missingNumber:
                 this.el.dataset.passwordMessageMissingNumber ||
-                'Das Passwort muss mindestens eine Zahl enthalten.',
+                'The password must contain at least one number.',
             missingSpecialCharacter:
                 this.el.dataset.passwordMessageMissingSpecialCharacter ||
-                'Das Passwort muss mindestens ein Sonderzeichen enthalten.',
+                'The password must contain at least one special character.',
         };
 
         this._registerEvents();

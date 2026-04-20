@@ -1,0 +1,15 @@
+{
+  "umiPasswordRule": {
+    "password": {
+      "description": "Mindestens 10 Zeichen, davon 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl und 1 Sonderzeichen.",
+      "patternMessage": "Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.",
+      "rule": {
+        "tooShort": "Das Passwort ist zu kurz (mindestens 10 Zeichen).",
+        "missingUppercase": "Das Passwort muss mindestens einen Großbuchstaben enthalten.",
+        "missingLowercase": "Das Passwort muss mindestens einen Kleinbuchstaben enthalten.",
+        "missingNumber": "Das Passwort muss mindestens eine Zahl enthalten.",
+        "missingSpecialCharacter": "Das Passwort muss mindestens ein Sonderzeichen enthalten."
+      }
+    }
+  }
+}

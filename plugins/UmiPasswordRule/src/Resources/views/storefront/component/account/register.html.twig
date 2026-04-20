@@ -1,7 +1,7 @@
 {% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
 
 {% block component_account_register_personal_password_input %}
-    {% set passwordFieldDescription = 'Mindestens 10 Zeichen, davon 1 Großbuchstabe, 1 Kleinbuchstabe, 1 Zahl und 1 Sonderzeichen.' %}
+    {% set passwordFieldDescription = 'umiPasswordRule.password.description'|trans|sw_sanitize %}
 
     {% sw_include '@Storefront/storefront/component/form/form-input.html.twig' with {
         type: 'password',
@@ -16,12 +16,12 @@
         attributes: {
             'data-umi-register-password': 'true',
             pattern: '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$',
-            'data-form-validation-pattern-message': 'Das Passwort muss mindestens 10 Zeichen sowie Großbuchstaben, Kleinbuchstaben, Zahl und Sonderzeichen enthalten.',
-            'data-password-message-too-short': 'Das Passwort ist zu kurz (mindestens 10 Zeichen).',
-            'data-password-message-missing-uppercase': 'Das Passwort muss mindestens einen Großbuchstaben enthalten.',
-            'data-password-message-missing-lowercase': 'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.',
-            'data-password-message-missing-number': 'Das Passwort muss mindestens eine Zahl enthalten.',
-            'data-password-message-missing-special-character': 'Das Passwort muss mindestens ein Sonderzeichen enthalten.'
+            'data-form-validation-pattern-message': 'umiPasswordRule.password.patternMessage'|trans|sw_sanitize,
+            'data-password-message-too-short': 'umiPasswordRule.password.rule.tooShort'|trans|sw_sanitize,
+            'data-password-message-missing-uppercase': 'umiPasswordRule.password.rule.missingUppercase'|trans|sw_sanitize,
+            'data-password-message-missing-lowercase': 'umiPasswordRule.password.rule.missingLowercase'|trans|sw_sanitize,
+            'data-password-message-missing-number': 'umiPasswordRule.password.rule.missingNumber'|trans|sw_sanitize,
+            'data-password-message-missing-special-character': 'umiPasswordRule.password.rule.missingSpecialCharacter'|trans|sw_sanitize
         }
     } %}
 {% endblock %}
