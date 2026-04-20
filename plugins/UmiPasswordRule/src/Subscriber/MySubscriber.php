@@ -23,27 +23,27 @@ class MySubscriber implements EventSubscriberInterface
 
         $definition->add('password',
             new NotBlank([
-                'message' => 'Bitte gib ein Passwort ein.',
+                'message' => 'umiPasswordRule.password.notBlank',
             ]),
             new Length([
                 'min' => 10,
-                'minMessage' => 'Das Passwort muss mindestens 10 Zeichen lang sein.',
+                'minMessage' => 'umiPasswordRule.password.tooShort',
             ]),
             new Regex([
                 'pattern' => '/[A-Z]/',
-                'message' => 'Das Passwort muss mindestens einen Großbuchstaben enthalten.',
+                'message' => 'umiPasswordRule.password.missingUppercase',
             ]),
             new Regex([
                 'pattern' => '/[a-z]/',
-                'message' => 'Das Passwort muss mindestens einen Kleinbuchstaben enthalten.',
+                'message' => 'umiPasswordRule.password.missingLowercase',
             ]),
             new Regex([
                 'pattern' => '/[0-9]/',
-                'message' => 'Das Passwort muss mindestens eine Zahl enthalten.',
+                'message' => 'umiPasswordRule.password.missingNumber',
             ]),
             new Regex([
                 'pattern' => '/[^a-zA-Z0-9]/',
-                'message' => 'Das Passwort muss mindestens ein Sonderzeichen enthalten.',
+                'message' => 'umiPasswordRule.password.missingSpecialCharacter',
             ])
         );
     }

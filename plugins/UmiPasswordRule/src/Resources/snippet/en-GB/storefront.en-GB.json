@@ -3,6 +3,12 @@
     "password": {
       "description": "At least 10 characters, including 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.",
       "patternMessage": "The password must contain at least 10 characters, uppercase and lowercase letters, a number, and a special character.",
+      "notBlank": "Please enter a password.",
+      "tooShort": "The password must be at least 10 characters long.",
+      "missingUppercase": "The password must contain at least one uppercase letter.",
+      "missingLowercase": "The password must contain at least one lowercase letter.",
+      "missingNumber": "The password must contain at least one number.",
+      "missingSpecialCharacter": "The password must contain at least one special character.",
       "rule": {
         "tooShort": "The password is too short (minimum 10 characters).",
         "missingUppercase": "The password must contain at least one uppercase letter.",
