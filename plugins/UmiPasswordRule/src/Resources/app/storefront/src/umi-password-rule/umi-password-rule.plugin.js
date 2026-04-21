@@ -3,6 +3,7 @@ import { validatePasswordRules } from './password-rules.validator';
 
 const Plugin = window.PluginBaseClass;
 const LIVE_MESSAGE_ID_SUFFIX = 'umi-password-rule-live-message';
+const VISIBILITY_TOGGLE_LABEL_SELECTOR = '[data-umi-password-toggle-label]';
 
 const escapeHtml = (value) => String(value)
     .replace(/&/g, '&amp;')
@@ -16,12 +17,21 @@ export default class UmiPasswordRulePlugin extends Plugin {
         this._form = this.el.closest('form');
         this._submitButton = this._form ? this._form.querySelector('[type="submit"]') : null;
         this._liveMessageElement = this._createLiveMessageElement();
+        this._toggleLabels = this._collectToggleLabels();
 
         this._messageTemplates = this._collectMessageTemplates();
         this._rules = createPasswordRulesConfig();
 
+        this._initializeVisibilityToggles();
         this._registerEvents();
         this._validate();
+    }
+
+    _collectToggleLabels() {
+        return {
+            show: this.el.dataset.passwordToggleShowLabel || 'Show password',
+            hide: this.el.dataset.passwordToggleHideLabel || 'Hide password',
+        };
     }
 
     _collectMessageTemplates() {
@@ -52,6 +62,55 @@ export default class UmiPasswordRulePlugin extends Plugin {
     _registerEvents() {
         this.el.addEventListener('input', () => this._validate());
         this.el.addEventListener('blur', () => this._validate());
+    }
+
+    _initializeVisibilityToggles() {
+        const confirmationInput = this._form ? this._form.querySelector('#personalPasswordConfirmation') : null;
+
+        this._attachVisibilityToggle(this.el);
+        this._attachVisibilityToggle(confirmationInput);
+    }
+
+    _attachVisibilityToggle(inputElement) {
+        if (!inputElement || inputElement.dataset.umiPasswordVisibilityToggleAttached === 'true') {
+            return;
+        }
+
+        const wrapperElement = inputElement.parentElement;
+
+        if (!wrapperElement) {
+            return;
+        }
+
+        wrapperElement.classList.add('umi-password-rule__input-wrapper');
+        inputElement.classList.add('umi-password-rule__input');
+
+        const toggleButton = document.createElement('button');
+        toggleButton.type = 'button';
+        toggleButton.classList.add('umi-password-rule__toggle-button');
+        toggleButton.setAttribute('aria-pressed', 'false');
+        toggleButton.setAttribute('data-umi-password-toggle-button', 'true');
+        toggleButton.innerHTML = `
+            <span class="umi-password-rule__toggle-icon" aria-hidden="true">👁</span>
+            <span class="sr-only" data-umi-password-toggle-label>${escapeHtml(this._toggleLabels.show)}</span>
+        `;
+
+        toggleButton.addEventListener('click', () => {
+            const isVisible = inputElement.type === 'text';
+
+            inputElement.type = isVisible ? 'password' : 'text';
+            toggleButton.setAttribute('aria-pressed', String(!isVisible));
+
+            const labelElement = toggleButton.querySelector(VISIBILITY_TOGGLE_LABEL_SELECTOR);
+            const labelText = isVisible ? this._toggleLabels.show : this._toggleLabels.hide;
+
+            if (labelElement) {
+                labelElement.textContent = labelText;
+            }
+        });
+
+        wrapperElement.appendChild(toggleButton);
+        inputElement.dataset.umiPasswordVisibilityToggleAttached = 'true';
     }
 
     _createLiveMessageElement() {

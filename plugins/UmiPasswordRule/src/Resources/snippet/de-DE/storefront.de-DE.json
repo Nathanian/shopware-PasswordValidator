@@ -44,6 +44,10 @@
           "singular": "{{count}} Sonderzeichen",
           "plural": "{{count}} Sonderzeichen"
         }
+      },
+      "toggle": {
+        "show": "Passwort anzeigen",
+        "hide": "Passwort ausblenden"
       }
     }
   }

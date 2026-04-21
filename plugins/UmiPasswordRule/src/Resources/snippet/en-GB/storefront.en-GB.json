@@ -44,6 +44,10 @@
           "singular": "{{count}} special character",
           "plural": "{{count}} special characters"
         }
+      },
+      "toggle": {
+        "show": "Show password",
+        "hide": "Hide password"
       }
     }
   }
