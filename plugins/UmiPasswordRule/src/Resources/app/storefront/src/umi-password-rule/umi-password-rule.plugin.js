@@ -3,7 +3,6 @@ import { validatePasswordRules } from './password-rules.validator';
 
 const Plugin = window.PluginBaseClass;
 const LIVE_MESSAGE_ID_SUFFIX = 'umi-password-rule-live-message';
-const VISIBILITY_TOGGLE_LABEL_SELECTOR = '[data-umi-password-toggle-label]';
 
 const escapeHtml = (value) => String(value)
     .replace(/&/g, '&amp;')
@@ -89,10 +88,10 @@ export default class UmiPasswordRulePlugin extends Plugin {
         toggleButton.type = 'button';
         toggleButton.classList.add('umi-password-rule__toggle-button');
         toggleButton.setAttribute('aria-pressed', 'false');
+        toggleButton.setAttribute('aria-label', this._toggleLabels.show);
         toggleButton.setAttribute('data-umi-password-toggle-button', 'true');
         toggleButton.innerHTML = `
             <span class="umi-password-rule__toggle-icon" aria-hidden="true">👁</span>
-            <span class="sr-only" data-umi-password-toggle-label>${escapeHtml(this._toggleLabels.show)}</span>
         `;
 
         toggleButton.addEventListener('click', () => {
@@ -100,13 +99,8 @@ export default class UmiPasswordRulePlugin extends Plugin {
 
             inputElement.type = isVisible ? 'password' : 'text';
             toggleButton.setAttribute('aria-pressed', String(!isVisible));
-
-            const labelElement = toggleButton.querySelector(VISIBILITY_TOGGLE_LABEL_SELECTOR);
             const labelText = isVisible ? this._toggleLabels.show : this._toggleLabels.hide;
-
-            if (labelElement) {
-                labelElement.textContent = labelText;
-            }
+            toggleButton.setAttribute('aria-label', labelText);
         });
 
         wrapperElement.appendChild(toggleButton);
@@ -131,7 +125,7 @@ export default class UmiPasswordRulePlugin extends Plugin {
         messageElement.setAttribute('data-umi-password-live-message', 'true');
         messageElement.setAttribute('aria-live', 'polite');
         messageElement.setAttribute('aria-atomic', 'true');
-        messageElement.classList.add('form-text', 'text-danger', 'umi-password-rule__messages');
+        messageElement.classList.add('text-danger', 'umi-password-rule__messages');
         messageElement.hidden = true;
 
         this.el.insertAdjacentElement('afterend', messageElement);
