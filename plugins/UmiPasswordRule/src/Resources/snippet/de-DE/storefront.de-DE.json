@@ -3,30 +3,30 @@
     "password": {
       "message": {
         "minLength": {
-          "singular": "Das Passwort muss mindestens {{count}} Zeichen lang sein.",
-          "plural": "Das Passwort muss mindestens {{count}} Zeichen lang sein."
+          "singular": "Mindestens {{count}} Zeichen erforderlich",
+          "plural": "Mindestens {{count}} Zeichen erforderlich"
         },
         "uppercase": {
-          "singular": "Das Passwort muss mindestens {{count}} Großbuchstaben enthalten.",
-          "plural": "Das Passwort muss mindestens {{count}} Großbuchstaben enthalten."
+          "singular": "Mindestens {{count}} Großbuchstabe erforderlich",
+          "plural": "Mindestens {{count}} Großbuchstaben erforderlich"
         },
         "lowercase": {
-          "singular": "Das Passwort muss mindestens {{count}} Kleinbuchstaben enthalten.",
-          "plural": "Das Passwort muss mindestens {{count}} Kleinbuchstaben enthalten."
+          "singular": "Mindestens {{count}} Kleinbuchstabe erforderlich",
+          "plural": "Mindestens {{count}} Kleinbuchstaben erforderlich"
         },
         "number": {
-          "singular": "Das Passwort muss mindestens {{count}} Zahl enthalten.",
-          "plural": "Das Passwort muss mindestens {{count}} Zahlen enthalten."
+          "singular": "Mindestens {{count}} Zahl erforderlich",
+          "plural": "Mindestens {{count}} Zahlen erforderlich"
         },
         "specialCharacter": {
-          "singular": "Das Passwort muss mindestens {{count}} Sonderzeichen enthalten.",
-          "plural": "Das Passwort muss mindestens {{count}} Sonderzeichen enthalten."
+          "singular": "Mindestens {{count}} Sonderzeichen erforderlich",
+          "plural": "Mindestens {{count}} Sonderzeichen erforderlich"
         }
       },
       "hint": {
         "minLength": {
-          "singular": "Mindestens {{count}} Zeichen",
-          "plural": "Mindestens {{count}} Zeichen"
+          "singular": "Min. {{count}} Zeichen",
+          "plural": "Min. {{count}} Zeichen"
         },
         "uppercase": {
           "singular": "{{count}} Großbuchstabe",
@@ -47,7 +47,7 @@
       },
       "toggle": {
         "show": "Passwort anzeigen",
-        "hide": "Passwort ausblenden"
+        "hide": "Passwort verbergen"
       }
     }
   }
