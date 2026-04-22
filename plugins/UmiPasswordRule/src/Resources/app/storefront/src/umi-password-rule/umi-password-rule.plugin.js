@@ -19,7 +19,7 @@ export default class UmiPasswordRulePlugin extends Plugin {
         this._toggleLabels = this._collectToggleLabels();
 
         this._messageTemplates = this._collectMessageTemplates();
-        this._rules = createPasswordRulesConfig();
+        this._rules = createPasswordRulesConfig(this.el);
 
         this._initializeVisibilityToggles();
         this._registerEvents();

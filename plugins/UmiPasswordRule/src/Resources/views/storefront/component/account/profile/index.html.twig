@@ -1,17 +1,30 @@
-{% sw_extends '@Storefront/storefront/component/account/register.html.twig' %}
+{% sw_extends '@Storefront/storefront/page/account/profile/index.html.twig' %}
 
-{% block component_account_register_personal_password_input %}
+{% block page_account_profile_new_password %}
+    {% set passwordFieldDescription = '' %}
+
+    {% if config('UmiPasswordRule.config.minLength') != 0 %}
+        {% set passwordFieldDescription = 'account.personalPasswordDescription'|trans({
+            '%minLength%': config('UmiPasswordRule.config.minLength')
+        })|sw_sanitize %}
+    {% endif %}
+
     {% sw_include '@Storefront/storefront/component/form/form-input.html.twig' with {
         type: 'password',
-        label: 'account.personalPasswordLabel'|trans|sw_sanitize,
-        id: 'personalPassword',
-        name: 'password',
+        label: 'account.profilePasswordCreateNew'|trans|sw_sanitize,
+        id: 'newPassword',
+        name: 'password[newPassword]',
+        description: passwordFieldDescription,
         autocomplete: 'new-password',
-        violationPath: '/password',
-        validationRules: 'required',
-        required: true,
+        violationPath: '/newPassword',
+        validationRules: 'required,minLength',
+        minlength: config('UmiPasswordRule.config.minLength') ?: 10,
+        additionalClass: 'col-sm-6',
         attributes: {
-            'data-umi-register-password': 'true',
+            'data-umi-password-rules': 'true',
+            'data-umi-password-context': 'account-profile-password',
+            'data-umi-password-confirmation-selector': '#newPasswordConfirmation',
+            'data-umi-current-password-selector': '#passwordCurrent',
 
             'data-password-rule-min-length': config('UmiPasswordRule.config.minLength') ?: 10,
             'data-password-rule-uppercase': config('UmiPasswordRule.config.uppercase') ?: 1,
@@ -29,6 +42,7 @@
             'data-password-message-number-plural': 'umiPasswordRule.password.message.number.plural'|trans|sw_sanitize,
             'data-password-message-special-character-singular': 'umiPasswordRule.password.message.specialCharacter.singular'|trans|sw_sanitize,
             'data-password-message-special-character-plural': 'umiPasswordRule.password.message.specialCharacter.plural'|trans|sw_sanitize,
+            'data-password-message-current-password-different': 'umiPasswordRule.password.message.currentPasswordDifferent'|trans|sw_sanitize,
 
             'data-password-hint-min-length-singular': 'umiPasswordRule.password.hint.minLength.singular'|trans|sw_sanitize,
             'data-password-hint-min-length-plural': 'umiPasswordRule.password.hint.minLength.plural'|trans|sw_sanitize,
@@ -40,6 +54,7 @@
             'data-password-hint-number-plural': 'umiPasswordRule.password.hint.number.plural'|trans|sw_sanitize,
             'data-password-hint-special-character-singular': 'umiPasswordRule.password.hint.specialCharacter.singular'|trans|sw_sanitize,
             'data-password-hint-special-character-plural': 'umiPasswordRule.password.hint.specialCharacter.plural'|trans|sw_sanitize,
+            'data-password-hint-current-password-different': 'umiPasswordRule.password.hint.currentPasswordDifferent'|trans|sw_sanitize,
 
             'data-password-toggle-show-label': 'umiPasswordRule.password.toggle.show'|trans|sw_sanitize,
             'data-password-toggle-hide-label': 'umiPasswordRule.password.toggle.hide'|trans|sw_sanitize

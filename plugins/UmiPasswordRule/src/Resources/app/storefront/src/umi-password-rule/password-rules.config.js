@@ -33,13 +33,13 @@ const buildPluralizedMessage = (templates, count, fallbackSingular, fallbackPlur
         : replaceCountToken(pluralTemplate, count);
 };
 
-export const createPasswordRulesConfig = (options = {}) => {
+export const createPasswordRulesConfig = (element) => {
     const values = {
-        minLength: toFiniteNumber(options.minLength, DEFAULT_RULE_VALUES.minLength),
-        uppercase: toFiniteNumber(options.uppercase, DEFAULT_RULE_VALUES.uppercase),
-        lowercase: toFiniteNumber(options.lowercase, DEFAULT_RULE_VALUES.lowercase),
-        numbers: toFiniteNumber(options.numbers, DEFAULT_RULE_VALUES.numbers),
-        specialCharacters: toFiniteNumber(options.specialCharacters, DEFAULT_RULE_VALUES.specialCharacters),
+        minLength: toFiniteNumber(element?.dataset?.passwordRuleMinLength, DEFAULT_RULE_VALUES.minLength),
+        uppercase: toFiniteNumber(element?.dataset?.passwordRuleUppercase, DEFAULT_RULE_VALUES.uppercase),
+        lowercase: toFiniteNumber(element?.dataset?.passwordRuleLowercase, DEFAULT_RULE_VALUES.lowercase),
+        numbers: toFiniteNumber(element?.dataset?.passwordRuleNumbers, DEFAULT_RULE_VALUES.numbers),
+        specialCharacters: toFiniteNumber(element?.dataset?.passwordRuleSpecialCharacters, DEFAULT_RULE_VALUES.specialCharacters),
     };
 
     return [
@@ -55,8 +55,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.minLengthPlural,
                     },
                     rule.value,
-                    'The password must be at least {{count}} character long.',
-                    'The password must be at least {{count}} characters long.'
+                    'Must be at least {{count}} character long',
+                    'Must be at least {{count}} characters long'
                 ),
             buildHint: (rule, templates = {}) =>
                 buildPluralizedMessage(
@@ -65,8 +65,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.hintMinLengthPlural,
                     },
                     rule.value,
-                    'Minimum {{count}} character',
-                    'Minimum {{count}} characters'
+                    'Min. {{count}} character',
+                    'Min. {{count}} characters'
                 ),
         },
         {
@@ -81,8 +81,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.uppercasePlural,
                     },
                     rule.value,
-                    'The password must contain at least {{count}} uppercase letter.',
-                    'The password must contain at least {{count}} uppercase letters.'
+                    'Must contain {{count}} uppercase letter',
+                    'Must contain {{count}} uppercase letters'
                 ),
             buildHint: (rule, templates = {}) =>
                 buildPluralizedMessage(
@@ -107,8 +107,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.lowercasePlural,
                     },
                     rule.value,
-                    'The password must contain at least {{count}} lowercase letter.',
-                    'The password must contain at least {{count}} lowercase letters.'
+                    'Must contain {{count}} lowercase letter',
+                    'Must contain {{count}} lowercase letters'
                 ),
             buildHint: (rule, templates = {}) =>
                 buildPluralizedMessage(
@@ -133,8 +133,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.numberPlural,
                     },
                     rule.value,
-                    'The password must contain at least {{count}} number.',
-                    'The password must contain at least {{count}} numbers.'
+                    'Must contain {{count}} number',
+                    'Must contain {{count}} numbers'
                 ),
             buildHint: (rule, templates = {}) =>
                 buildPluralizedMessage(
@@ -159,8 +159,8 @@ export const createPasswordRulesConfig = (options = {}) => {
                         plural: templates.specialCharacterPlural,
                     },
                     rule.value,
-                    'The password must contain at least {{count}} special character.',
-                    'The password must contain at least {{count}} special characters.'
+                    'Must contain {{count}} special character',
+                    'Must contain {{count}} special characters'
                 ),
             buildHint: (rule, templates = {}) =>
                 buildPluralizedMessage(

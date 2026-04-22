@@ -1,15 +1,94 @@
-.umi-password-rule__summary {
-    margin-top: 0.5rem;
+/* ---------- Passwort-Spalten (gleich wie First/Last Name) ---------- */
+.register-personal .row > .form-group:has(#personalPassword),
+.register-personal .row > .form-group:has(#personalPasswordConfirmation) {
+    flex: 0 0 50%;
+    max-width: 50%;
+    box-sizing: border-box;
+    padding-right: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+    padding-left: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
 }
 
-.umi-password-rule__summary-list,
+/* Mobile fallback */
+@media (max-width: 575.98px) {
+    .register-personal .row > .form-group:has(#personalPassword),
+    .register-personal .row > .form-group:has(#personalPasswordConfirmation) {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+/* ---------- Wrapper für Input + Auge ---------- */
+.umi-password-rule__input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+/* ---------- Input ---------- */
+.umi-password-rule__input {
+    width: 100%;
+    padding-right: 2.25rem;
+    box-sizing: border-box;
+}
+
+/* ---------- Toggle Button ---------- */
+.umi-password-rule__toggle-button {
+    position: absolute;
+    top: 50%;
+    right: 0.6rem;
+    transform: translateY(-50%);
+    z-index: 10;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+}
+
+.umi-password-rule__toggle-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+}
+
+.umi-password-rule__toggle-icon svg {
+    width: 1rem;
+    height: 1rem;
+    display: block;
+}
+
+/* ---------- Live Message Box ---------- */
+.umi-password-rule__messages {
+    display: inline-block;
+    width: fit-content;
+    max-width: min(100%, 30rem);
+    margin-top: 0.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid #b54747;
+    border-radius: 0.375rem;
+    background-color: #fdf2f2;
+    box-sizing: border-box;
+    clear: both;
+}
+
+/* ---------- Liste ---------- */
 .umi-password-rule__message-list {
     margin: 0;
-    padding-left: 1.25rem;
+    padding: 0;
+    list-style: none;
 }
 
-.umi-password-rule__summary-item,
+/* ---------- Items ---------- */
 .umi-password-rule__message-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     line-height: 1.4;
 }
 
@@ -17,35 +96,26 @@
     margin-top: 0.375rem;
 }
 
-.umi-password-rule__messages {
-    margin-top: 0.5rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid #b54747;
-    border-radius: 0.375rem;
-    background-color: #fdf2f2;
-    color: #5a1f1f;
+/* ---------- States ---------- */
+.umi-password-rule__message-item--valid {
+    color: #198754; /* grün */
 }
 
-.umi-password-rule__input-wrapper {
-    position: relative;
+.umi-password-rule__message-item--invalid {
+    color: #b54747; /* rot */
 }
 
-.umi-password-rule__input {
-    padding-right: 2.75rem;
+/* ---------- Icon ---------- */
+.umi-password-rule__message-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    flex: 0 0 1rem;
+    font-weight: 700;
 }
 
-.umi-password-rule__toggle-button {
-    position: absolute;
-    top: 50%;
-    right: 0.625rem;
-    transform: translateY(-50%);
-    border: 0;
-    background: transparent;
-    padding: 0.25rem;
-    line-height: 1;
-    cursor: pointer;
-}
-
-.umi-password-rule__toggle-icon {
-    font-size: 1rem;
+/* ---------- Text ---------- */
+.umi-password-rule__message-text {
+    display: inline-block;
 }
