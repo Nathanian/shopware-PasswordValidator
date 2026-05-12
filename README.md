@@ -115,8 +115,8 @@ bin/console theme:compile
 
 ## Screenshots
 
-<img width="928" height="272" alt="Test" src="https://github.com/user-attachments/assets/78e57ec1-cc37-4bef-bc0e-dec3b751f298" />
 <img width="1599" height="796" alt="Main" src="https://github.com/user-attachments/assets/1258597d-7ef2-4f38-a049-1c13cf434ec8" />
+<img width="928" height="272" alt="Test" src="https://github.com/user-attachments/assets/78e57ec1-cc37-4bef-bc0e-dec3b751f298" />
 <img width="731" height="298" alt="Fail" src="https://github.com/user-attachments/assets/2da59672-5353-4b32-aed0-9b394f7f32d2" />
 
 ## Author
